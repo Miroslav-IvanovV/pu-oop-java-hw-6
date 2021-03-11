@@ -13,6 +13,7 @@ public class Wall  extends Item{
 
     @Override
     public void render(Graphics g) {
-
+        g.setColor(this.colour);
+        g.fill3DRect(col * 25,row * 25,25,25,true);
     }
 }

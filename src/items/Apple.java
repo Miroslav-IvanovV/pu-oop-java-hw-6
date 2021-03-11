@@ -13,6 +13,7 @@ public class Apple extends Item{
 
     @Override
     public void render(Graphics g) {
-
+        g.setColor(Color.RED);
+        g.fillOval(col * 25,row * 25,25,25);
     }
 }
