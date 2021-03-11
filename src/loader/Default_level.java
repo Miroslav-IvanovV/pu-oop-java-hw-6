@@ -27,19 +27,27 @@ public class Default_level {
 
         return itemsCollector;
     }
-
+    /**
+    a random generator
+     */
     public static int randomGenerator(int bound){
         Random rand = new Random();
         int random = rand.nextInt(bound);
         return random;
     }
 
+    /**
+     setting the first apple
+     */
     private void settingTheApple(){
         Applex = randomGenerator(30);
         Appley = randomGenerator(25);
         itemsCollector[Applex][Appley] = new Apple(Applex, Appley, Color.RED);
     }
 
+    /**
+        setting the walls
+     */
     private void wallsSetter() {
         for (int i = 0; i < 10; i++) {
             int x = randomGenerator(30);

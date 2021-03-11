@@ -1,5 +1,7 @@
 package items;
 
+import loader.Default_level;
+
 import java.awt.*;
 
 import static loader.Default_level.UNIT_SIZE;
@@ -51,6 +53,9 @@ public class Smoko extends Item {
         }
     }
 
+    /**
+     moving method for the snake
+     */
     public void move(){
         for(int i = bodyParts;i > 0; i--) {
             bodyPartAtx[i] = bodyPartAtx[i - 1];
@@ -71,6 +76,27 @@ public class Smoko extends Item {
                     bodyPartAtx[0] = bodyPartAtx[0] + UNIT_SIZE;
                     break;
         }
+    }
+    /**
+     check if the head collapse with the body
+     */
+    public boolean checkForBody() {
+        boolean r = true;
+        for(int i = bodyParts; i > 0; i--) {
+            if ((bodyPartAtx[0] == bodyPartAtx[i]) && (bodyPartAty[0] == bodyPartAty[i])) r = true;
+            else r = false;
+        }
+
+        return r;
+    }
+    /**
+    checking if the snake is on the game board
+     */
+    public void checkingTheBoarder(){
+        if(bodyPartAtx[0] < 0) bodyPartAtx[0] = Default_level.SCREEN_WIDTH;
+        if(bodyPartAtx[0] > Default_level.SCREEN_WIDTH) bodyPartAtx[0] = 0;
+        if(bodyPartAty[0] < 0) bodyPartAty[0] = Default_level.SCREEN_HEIGHT;
+        if(bodyPartAty[0] > Default_level.SCREEN_HEIGHT) bodyPartAty[0] = 0;
     }
 
 }

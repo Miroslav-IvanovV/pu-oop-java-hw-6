@@ -1,9 +1,7 @@
 package homework;
 
-import gameRules.GameRules;
 import jpanel.GameFrame;
-import loader.Default_level;
-import rendering.Renderer;
+
 
 public class Main {
 

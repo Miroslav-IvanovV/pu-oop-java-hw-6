@@ -2,6 +2,7 @@ package rendering;
 
 import gameRules.GameRules;
 import items.Smoko;
+import items.Wall;
 import loader.Default_level;
 
 import javax.swing.*;
@@ -11,7 +12,9 @@ import java.awt.event.KeyEvent;
 
 public class Renderer extends JPanel implements ActionListener {
 
-    static final int DELAY = 400;
+    Timer timer;
+
+    static final int DELAY = 200;
     GameRules gameBoardLogic;
     Smoko smoko = new Smoko(1,1,Color.GREEN,'R',3);
     boolean running = true;
@@ -27,9 +30,12 @@ public class Renderer extends JPanel implements ActionListener {
 
     }
 
+    /**
+     starts the game
+     */
     public void startGame(){
         running = true;
-        Timer timer = new Timer(DELAY,this);
+        timer = new Timer(DELAY,this);
         timer.start();
     }
 
@@ -38,8 +44,8 @@ public class Renderer extends JPanel implements ActionListener {
         if(running){
             smoko.move();
             checkApple();
-            System.out.println(smoko.getSmokosHeadx());
-            System.out.println(Default_level.Applex);
+            checkForWallOrBody();
+            smoko.checkingTheBoarder();
         }
         repaint();
 
@@ -82,18 +88,72 @@ public class Renderer extends JPanel implements ActionListener {
      render the game
      */
     public void draw(Graphics g) {
-        for(int row = 0; row < Default_level.NUMBER_OF_ROWS; row++) {
-            for(int col = 0; col < Default_level.NUMBER_OF_COLS; col++) {
+        if (running) {
+            for (int row = 0; row < Default_level.NUMBER_OF_ROWS; row++) {
+                for (int col = 0; col < Default_level.NUMBER_OF_COLS; col++) {
 
-                gameBoardLogic.renderGameTile(g,row,col);
+                    gameBoardLogic.renderGameTile(g, row, col);
+                }
+            }
+            smoko.render(g);
+            g.setColor(Color.red);
+            g.setFont( new Font("Ink Free",Font.BOLD, 40));
+            FontMetrics metrics = getFontMetrics(g.getFont());
+            g.drawString("Score: " + (smoko.getBodyParts()-3), (Default_level.SCREEN_WIDTH - metrics.stringWidth("Score: " + smoko.getBodyParts()))/2, g.getFont().getSize());
+            if(smoko.getBodyParts() > 10){
+                youAreAWinner(g);
+                timer.stop();
+
             }
         }
-        smoko.render(g);
+        else gameOver(g);
     }
+
+    /**
+        checking if the apple is on the board and if not makes a new one
+     */
     public void checkApple(){
         if((smoko.getSmokosHeady() / 25 == Default_level.Applex) && ((smoko.getSmokosHeadx() / 25 == Default_level.Appley))){
             smoko.setBodyParts(smoko.getBodyParts() + 1);
+            gameBoardLogic.deleteApple(Default_level.Applex,Default_level.Appley);
 
         }
+    }
+
+    /**
+     check for walls
+     */
+    public void checkForWallOrBody(){
+        if(gameBoardLogic.getItem(smoko.getSmokosHeady() / 25, smoko.getSmokosHeadx() / 25) instanceof Wall){
+            running = false;
+        }
+        if(smoko.checkForBody() == true) running = false;
+    }
+
+    /**
+        the game over sign
+     */
+    public void gameOver(Graphics g) {
+        //Score
+        g.setColor(Color.red);
+        g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        FontMetrics metrics1 = getFontMetrics(g.getFont());
+        //Game Over text
+        g.setColor(Color.red);
+        g.setFont(new Font("Ink Free", Font.BOLD, 75));
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        g.drawString("Game Over", (Default_level.SCREEN_WIDTH - metrics2.stringWidth("Game Over")) / 2, Default_level.SCREEN_HEIGHT / 2);
+    }
+
+    public void youAreAWinner(Graphics g) {
+        g.setColor(Color.red);
+        g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        FontMetrics metrics1 = getFontMetrics(g.getFont());
+        g.drawString("Score: " + (smoko.getBodyParts() - 3), (Default_level.SCREEN_WIDTH - metrics1.stringWidth("Score: " + (smoko.getBodyParts() - 3)))/2, g.getFont().getSize());
+        //Game Over text
+        g.setColor(Color.red);
+        g.setFont(new Font("Ink Free", Font.BOLD, 75));
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        g.drawString("You Are A Winner", (Default_level.SCREEN_WIDTH - metrics2.stringWidth("You Are A Winner")) / 2, Default_level.SCREEN_HEIGHT / 2);
     }
 }
