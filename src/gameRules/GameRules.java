@@ -16,6 +16,8 @@ public class GameRules {
      */
     public void renderGameTile(Graphics g, int row, int col) {
 
-        itemsCollection[row][col].render(g);
+        if(itemsCollection[row][col] != null) {
+            itemsCollection[row][col].render(g);
+        }
     }
 }

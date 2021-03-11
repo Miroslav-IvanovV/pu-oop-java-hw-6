@@ -16,7 +16,7 @@ public class Default_level {
     public static final int SCREEN_HEIGHT =  NUMBER_OF_ROWS * UNIT_SIZE;
 
 
-    Item[][] itemsCollector = new Item[25][30];
+    Item[][] itemsCollector = new Item[30][25];
 
     public Item[][] load(){
 
@@ -33,15 +33,15 @@ public class Default_level {
     }
 
     private void settingTheApple(){
-        int x = randomGenerator(25);
-        int y = randomGenerator(30);
+        int x = randomGenerator(30);
+        int y = randomGenerator(25);
         itemsCollector[x][y] = new Apple(x, y, Color.RED);
     }
 
     private void wallsSetter() {
         for (int i = 0; i < 10; i++) {
-            int x = randomGenerator(25);
-            int y = randomGenerator(30);
+            int x = randomGenerator(30);
+            int y = randomGenerator(25);
             itemsCollector[x][y] = new Wall(x,y, Color.GRAY);
         }
     }
