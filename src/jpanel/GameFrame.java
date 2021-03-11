@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 public class GameFrame extends JFrame{
 
     public GameFrame(){
+
         Default_level loader     = new Default_level();
         GameRules gameRules     = new GameRules(loader.load());
         Renderer renderer       = new Renderer(gameRules);
